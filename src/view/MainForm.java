@@ -8,6 +8,7 @@ import dao.entity.EntKaryawan;
 import dao.factory.FacKaryawan;
 import dao.interfaces.InterfaceKaryawan;
 import javax.swing.JOptionPane;
+import util.DBUtil;
 import util.StringUtil;
 
 /**
@@ -29,8 +30,6 @@ public class MainForm extends javax.swing.JFrame {
         jDLogin.setLocationRelativeTo(null);
         jDLogin.setFocusable(true);
         txtPegawai.requestFocus();
-        
-        
     }
 
     /**
@@ -226,6 +225,11 @@ public class MainForm extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        DBUtil dBUtil = new DBUtil();
+        if(!dBUtil.checkConnection()){
+            JOptionPane.showMessageDialog(null, "Database tidak bisa diakses", "Error Database", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

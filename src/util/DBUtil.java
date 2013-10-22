@@ -33,6 +33,14 @@ public class DBUtil {
     public Connection getConn(){
         return this.conn;
     }
+    
+    public boolean checkConnection(){
+        if(this.conn != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public void closeConn(){
         if(this.conn!=null){
             try {
