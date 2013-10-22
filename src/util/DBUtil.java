@@ -26,7 +26,7 @@ public class DBUtil {
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             this.conn = DriverManager.getConnection(URL, USER, PASS);
-        }catch(Exception ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex){
             
         }
     }

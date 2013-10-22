@@ -10,7 +10,16 @@ package dao.entity;
  */
 public class EntJabatan {
     private String id_jabatan;
+
+    public String getNama_aplikasi() {
+        return nama_aplikasi;
+    }
+
+    public void setNama_aplikasi(String nama_aplikasi) {
+        this.nama_aplikasi = nama_aplikasi;
+    }
     private String nama_jabatan;
+    private String nama_aplikasi;
 
     public String getId_jabatan() {
         return id_jabatan;

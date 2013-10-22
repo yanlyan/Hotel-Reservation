@@ -6,7 +6,6 @@ package dao.implement;
 
 import com.mysql.jdbc.Connection;
 import dao.entity.EntJabatan;
-import dao.entity.EntKaryawan;
 import dao.interfaces.InterfaceJabatan;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +31,7 @@ public class ImplJabatan implements InterfaceJabatan{
     @Override
     public EntJabatan selectOneJabatan(String id_jabatan) throws Exception {
        EntJabatan jabatan = null;
-       String sql = "SELECT `id_jabatan`, `nama_jabatan` FROM `tb_jabatan` WHERE `id_jabatan`=?";
+       String sql = "SELECT `id_jabatan`, `nama_jabatan`, `nama_aplikasi` FROM `tb_jabatan` WHERE `id_jabatan`=?";
        PreparedStatement st = this.conn.prepareStatement(sql);
        st.setString(1, id_jabatan);
        ResultSet rs = st.executeQuery();
@@ -40,6 +39,7 @@ public class ImplJabatan implements InterfaceJabatan{
            jabatan = new EntJabatan();
            jabatan.setId_jabatan(rs.getString(1));
            jabatan.setNama_jabatan(rs.getString(2));
+           jabatan.setNama_aplikasi(rs.getString(3));
        }
        return jabatan;
     }

@@ -5,14 +5,12 @@
 package dao.implement;
 
 import com.mysql.jdbc.Connection;
-import dao.entity.EntJabatan;
 import dao.entity.EntKaryawan;
-import dao.factory.FacJabatan;
-import dao.interfaces.InterfaceJabatan;
 import dao.interfaces.InterfaceKaryawan;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import util.StringUtil;
 
 /**
  *
@@ -39,11 +37,12 @@ public class ImplKaryawan implements InterfaceKaryawan{
     @Override
     public EntKaryawan login(String id_karyawan, String password_karyawan) throws Exception {
        EntKaryawan karyawan = null;
+       StringUtil strUtil = new StringUtil(id_karyawan);
        String sql = "SELECT `id_karyawan`, `pwd_karyawan`, `nama_karyawan`, `alamat_karyawan`, `telp_karyawan`, `id_jabatan` FROM `tb_karyawan` WHERE `id_karyawan`=? AND `pwd_karyawan`=? AND `id_jabatan`=?";
        PreparedStatement st = this.conn.prepareStatement(sql);
        st.setString(1, id_karyawan);
        st.setString(2, password_karyawan);
-       st.setString(3, getIdJabatan(id_karyawan));
+       st.setString(3, strUtil.getIdJabatan());
        ResultSet rs = st.executeQuery();
        if (rs.next()) {
            karyawan = new EntKaryawan();
@@ -56,21 +55,5 @@ public class ImplKaryawan implements InterfaceKaryawan{
        }
        return karyawan;
     }
-    
-    private String getIdJabatan(String id_karyawan) throws Exception{
-        String id;
-        InterfaceJabatan daoJabatan = FacJabatan.getJabatanDAO();
-        EntJabatan modelJabatan = daoJabatan.selectOneJabatan(id_karyawan.substring(0, 2));
-        if(modelJabatan != null){
-            id = modelJabatan.getId_jabatan();
-        } else {
-            id = "NA";
-        }
-        
-        return id;
-    }
-    
-
-   
     
 }
