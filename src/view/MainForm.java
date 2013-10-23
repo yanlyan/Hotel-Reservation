@@ -52,9 +52,11 @@ public class MainForm extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        menuItemExit = new javax.swing.JMenuItem();
+        menuItemLogin = new javax.swing.JMenuItem();
         menuItemLogout = new javax.swing.JMenuItem();
+        menuItemExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menuItemTamu = new javax.swing.JMenuItem();
 
         jDLogin.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         jDLogin.setTitle("Login");
@@ -162,10 +164,14 @@ public class MainForm extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        menuItemExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        menuItemExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/exit.png"))); // NOI18N
-        menuItemExit.setText("Exit");
-        jMenu1.add(menuItemExit);
+        menuItemLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/sign-in.png"))); // NOI18N
+        menuItemLogin.setText("Login");
+        menuItemLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLoginActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemLogin);
 
         menuItemLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/sign-out.png"))); // NOI18N
         menuItemLogout.setText("Logout");
@@ -176,9 +182,29 @@ public class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(menuItemLogout);
 
+        menuItemExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        menuItemExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/exit.png"))); // NOI18N
+        menuItemExit.setText("Exit");
+        menuItemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemExit);
+
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Data");
+
+        menuItemTamu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/user_1.png"))); // NOI18N
+        menuItemTamu.setText("Data Tamu");
+        menuItemTamu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemTamuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuItemTamu);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -191,7 +217,7 @@ public class MainForm extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGap(0, 442, Short.MAX_VALUE)
         );
 
         pack();
@@ -218,8 +244,27 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void menuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLogoutActionPerformed
-        logout();
+       logout();
     }//GEN-LAST:event_menuItemLogoutActionPerformed
+
+    private void menuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLoginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemLoginActionPerformed
+
+    private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemExitActionPerformed
+        if(daoKaryawan != null){
+           int dialogResult = JOptionPane.showOptionDialog(this, "Anda harus logout dulu, logout sekarang dan keluar?", "Peringatan", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Ya", "Tidak"}, "default");
+           if(dialogResult == JOptionPane.YES_OPTION){
+               logout();
+               System.exit(0);
+           }
+       }
+    }//GEN-LAST:event_menuItemExitActionPerformed
+
+    private void menuItemTamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemTamuActionPerformed
+        FormTamu frTamu = new FormTamu();
+        frTamu.setVisible(true);
+    }//GEN-LAST:event_menuItemTamuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,7 +272,7 @@ public class MainForm extends javax.swing.JFrame {
     public static void main(String args[]) {
         DBUtil dBUtil = new DBUtil();
         if(!dBUtil.checkConnection()){
-            JOptionPane.showMessageDialog(null, "Database tidak bisa diakses", "Error Database", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Database tidak bisa diakses, Hubungi Administrator", "Error Database", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
         /* Set the Nimbus look and feel */
@@ -262,19 +307,19 @@ public class MainForm extends javax.swing.JFrame {
             try {
                modelKaryawan = daoKaryawan.login(txtPegawai.getText(), strUtil.md5());
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(jDLogin, "Login Gagal x", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(jDLogin, "Data karyawan tidak ditemukan, periksa kembali pengisian anda", "Error", JOptionPane.ERROR_MESSAGE);
             } finally {
                 if(modelKaryawan==null || modelKaryawan.getId_jabatan().getId_jabatan().equals("NA")){
-                     JOptionPane.showMessageDialog(jDLogin, "Login Gagal", "Error", JOptionPane.ERROR_MESSAGE);
+                     JOptionPane.showMessageDialog(jDLogin, "Data karyawan tidak ditemukan, periksa kembali No. Pegawai dan Password", "Error", JOptionPane.ERROR_MESSAGE);
                  }else{
                      setVisible(true);
                      this.setTitle(modelKaryawan.getId_jabatan().getNama_aplikasi());
                      jDLogin.setVisible(false);
-
+                     menuItemLogin.setEnabled(false);
                  }
             }
         }else{
-            JOptionPane.showMessageDialog(jDLogin, "Tidak boleh kosong","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jDLogin, "Semua kolom harus diisi","Error", JOptionPane.ERROR_MESSAGE);
         }
        
        
@@ -302,7 +347,9 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JMenuItem menuItemExit;
+    private javax.swing.JMenuItem menuItemLogin;
     private javax.swing.JMenuItem menuItemLogout;
+    private javax.swing.JMenuItem menuItemTamu;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtPegawai;
     // End of variables declaration//GEN-END:variables
