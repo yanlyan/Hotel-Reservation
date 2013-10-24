@@ -17,5 +17,6 @@ public interface InterfaceTamu {
     public void deleteTamu(String id_tamu) throws Exception;
     public void updateTamu(String id_tamu) throws Exception;
     public EntTamu getOneTamu(String id_tamu) throws Exception;
+    public List<EntTamu> searchTamu(String field, String param) throws Exception;
     
 }

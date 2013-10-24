@@ -59,5 +59,25 @@ public class ImplTamu implements InterfaceTamu{
     public EntTamu getOneTamu(String id_tamu) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<EntTamu> searchTamu(String field, String param) throws Exception {
+        List<EntTamu> allTamu = new ArrayList<>();
+        param = "%"+param+"%";
+        String sql = "SELECT * FROM `tb_tamu` WHERE `"+ field +"` LIKE ?";
+        PreparedStatement st = this.conn.prepareStatement(sql);
+        st.setString(1, param);
+        System.out.println(st);
+        ResultSet rs = st.executeQuery();
+        while(rs.next()){
+            EntTamu tamu = new EntTamu();
+            tamu.setId_tamu(rs.getString(1));
+            tamu.setNama_tamu(rs.getString(2));
+            tamu.setAlamat_tamu(rs.getString(3));
+            tamu.setTelp_tamu(rs.getString(4));
+            allTamu.add(tamu);
+        }
+        return allTamu;
+    }
     
 }

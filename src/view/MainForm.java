@@ -7,7 +7,10 @@ package view;
 import dao.entity.EntKaryawan;
 import dao.factory.FacKaryawan;
 import dao.interfaces.InterfaceKaryawan;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import util.DBUtil;
 import util.StringUtil;
 
@@ -30,6 +33,7 @@ public class MainForm extends javax.swing.JFrame {
         jDLogin.setLocationRelativeTo(null);
         jDLogin.setFocusable(true);
         txtPegawai.requestFocus();
+        closeAction();
     }
 
     /**
@@ -263,7 +267,9 @@ public class MainForm extends javax.swing.JFrame {
 
     private void menuItemTamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemTamuActionPerformed
         FormTamu frTamu = new FormTamu();
+        frTamu.setAlwaysOnTop(true);
         frTamu.setVisible(true);
+        frTamu.setLocationRelativeTo(this);
     }//GEN-LAST:event_menuItemTamuActionPerformed
 
     /**
@@ -333,6 +339,20 @@ public class MainForm extends javax.swing.JFrame {
         txtPegawai.setText(null);
         txtPassword.setText(null);
         txtPegawai.requestFocus();
+    }
+    
+    private void closeAction(){
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we){ 
+                String ObjButtons[] = {"Ya","Tidak"};
+                int PromptResult = JOptionPane.showOptionDialog(null,"Apakah anda yakin untuk keluar?","Peringatan",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+                if(PromptResult==JOptionPane.YES_OPTION){
+                    System.exit(0);
+                }
+            }
+        });
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
